@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+    
+    <!-- 부트스트랩 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- 구글폰트 -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Cute+Font|Gaegu|Gamja+Flower|Jua|Noto+Sans+KR|Poor+Story|Sunflower:300&display=swap"
+        rel="stylesheet">
+
+    <!-- 애니메이션 시트 -->
+    <link rel="stylesheet" href="css/css.css">
+
+    <title>jangyechan</title>
+
+    <!-- CSS -->
+    <style>
+        body {
+            background-color: rgb(252, 248, 233);
+            font-family: 'Jua', sans-serif;
+            /* overflow: hidden; */
+        }
+
+        table {
+            /* font-family: 'Jua', sans-serif; */
+            /* font-family: 'Gamja Flower', cursive; */
+            /* font-family: 'Poor Story', cursive; */
+            /* font-family: 'Gaegu', cursive; */
+            /* font-family: 'Cute Font', cursive; */
+            font-family: 'Sunflower', sans-serif;
+            /* font-family: 'Noto Sans KR', sans-serif; */
+            /* font-size: 2ch; */
+            /* font-style: italic; */
+        }
+
+        article {
+            width: 90%;
+        }
+
+        #visitName {
+            color: white;
+        }
+
+        .pannel-border {
+            padding: 20px;
+            margin: auto;
+            background-color: rgba(25, 18, 94, 0.062);
+            box-shadow: rgba(25, 18, 94, 0.062) 0 0 15px;
+        }
+
+        #nav-login {
+            left: -80px;
+            padding: 10px;
+        }
+
+        .pannel {
+            position: absolute;
+            visibility: hidden;
+            width: 100%;
+            min-height: 500px;
+            padding-top: 120px;
+            opacity: 0;
+            transition-duration: 0.1s;
+        }
+
+        .pannel-active {
+            -webkit-animation: wobble-hor-bottom 0.8s both;
+            animation: wobble-hor-bottom 0.8s both;
+            visibility: visible;
+            opacity: 1;
+            transition-duration: 0.1s;
+        }
+
+        .btn-drop {
+            visibility: visible;
+            -webkit-animation: bounce-top 0.9s both;
+            animation: bounce-top 0.9s both;
+            margin-top: 50px;
+        }
+
+        .btn-catch {
+            visibility: hidden;
+        }
+
+        .comp-shake {
+            -webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+            animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+        }
+
+        .feedback {
+            font-size: 1.7ch;
+        }
+
+        .img-block {
+            height: 450px;
+        }
+
+        .text-drop {
+            -webkit-animation: bounce-top 0.9s both;
+            animation: bounce-top 0.9s both;
+        }
+
+        .text-show {
+            -webkit-animation: text-focus-in 0.3s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+            animation: text-focus-in 0.3s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+        }
+
+        .text-fastshow {
+            -webkit-animation: text-focus-in 0.2s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+            animation: text-focus-in 0.2s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+        }
+
+        .login-on {
+            visibility: visible;
+        }
+
+        .login-out {
+            visibility: hidden;
+        }
+
+        .form-hidden {
+            display: none;
+            position: absolute;
+        }
+
+        .img-next{
+            width: 50px;
+            margin-top: 30px;
+        }
+        .roadMap-on{
+            visibility: visible;
+            -webkit-animation: roll-in-blurred-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+	        animation: roll-in-blurred-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+            /* animation-delay: 0.5s; */
+        }
+        #roadMap{
+            margin-top: 50px;
+            margin-bottom: 50px;
+            /* font-family: 'Jua', sans-serif; */
+            /* font-family: 'Gamja Flower', cursive; */
+            /* font-family: 'Poor Story', cursive; */
+            /* font-family: 'Gaegu', cursive; */
+            /* font-family: 'Cute Font', cursive; */
+            font-family: 'Sunflower', sans-serif;
+            /* font-family: 'Noto Sans KR', sans-serif; */
+            /* font-size: 2ch; */
+            /* font-style: italic; */
+        }
+        #roadMap ul{
+            list-style: none;
+            margin: 0px;
+            padding: 0px;
+        }
+        #food img{
+            height: 450px;
+        }
+        .curtain{
+            position: absolute;
+            z-index: 9999;
+            width: 100%;
+            height: 100vh;
+            background-color: rgb(48, 48, 48);
+            overflow: hidden;
+        }
+        .curtain-call{
+            /* animation: scale-out-ver-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
+            /* animation: slide-out-fwd-center 0.7s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
+            /* animation: slide-out-blurred-top 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both; */
+            /* animation: flicker-out-1 2s linear both; */
+            /* animation: scale-out-center 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; */
+            animation: slide-out-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+        }
+        .curtain .title{
+            color:white;
+            text-shadow: lightskyblue 0 0 15px;
+            font-size: 8ch;
+	        animation: vibrate-1 0.3s linear infinite both;
+        }
+        .curtain .info{
+            color:white;
+            text-shadow: lightskyblue 0 0 15px;
+            font-size: 2ch;
+        }
+        .curtain .title:hover {
+            animation: jello-horizontal 0.9s both;
+        }
+        .snow{
+            position: absolute;
+            color:rgb(206, 231, 245);
+            text-shadow: lightskyblue 0 0 20px;
+            opacity: 0.8;
+            transition-duration: 0.5s;
+            animation: slide-in-top 7s ease-in infinite both;
+            opacity: 0;
+        }
+        .snow span{
+            position: relative;
+        }
+        #foodImg{
+            margin: 50px 0 20px 0;
+        }
+        #foodImg img{
+            height: 380px;
+        }
+        .foodAnimation{
+            animation: heartbeat 1.5s ease-in-out infinite both;
+        }
+        .foodShow{
+            /* animation: swirl-in-fwd 0.6s ease-out both; */
+            animation: flicker-in-1 2s linear both;
+        }
+    </style>
+
+</head>
+
+<body style="overflow-x:hidden">
+    <!-- 커튼 -->
+    <div class="curtain">
+        <div id="snowZip">
+        </div>
+
+        <div class="row h-100">
+            <div class="col-sm-12 my-auto">
+                <div class="text-center">
+                    <p class="title" id="curtainCall">jangyechan</p>
+                    <p class="info">Homepage Project &lt; 2019 / 11 . 06 ~ 11 . 24 &gt;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 네비게이션 -->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">JangYeChan</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+            aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="pannelSwap(0)">홈</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="pannelSwap(1)">회원가입</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="pannelSwap(2)">자기소개</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="pannelSwap(3)">관심</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="pannelSwap(4)">로드맵</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="pannelSwap(8)">회원정보</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="pannelSwap(5)">참고자료</a>
+                </li> -->
+            </ul>
+            <ul class="navbar-nav" id="loginBefore">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        로그인
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-login">
+                        <div class="form-group">
+                            <form action="" method="get">
+                                <input class="form-control " type="text" placeholder="ID" id="loginId">
+                                <input class="form-control" type="password" placeholder="Password" id="loginPW">
+                                <div>
+                                    <input type="button" class="btn btn-dark btn-block btn-sm" value="로그인"
+                                        id="btnLogin">
+                                </div>
+                            </form>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item form-control-sm" href="#" onclick="pannelSwap(1)">회원 가입</a>
+                            <a class="dropdown-item form-control-sm" href="#" onclick="pannelSwap(6)">ID / PW 찾기</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav form-hidden" id="loginAfter">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="loginInfo" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="nav-login" style="left: -20px;">
+                        <div class="form-group">
+                            <!-- <a class="dropdown-item form-control-sm" href="#" onclick="pannelSwap(1)">회원 탈퇴</a> -->
+                            <a class="dropdown-item form-control-sm" href="#" id="btnLogout">로그아웃</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 아티클 -->
+    <article>
+        <!-- 홈 페이지 -->
+        <div class="pannel">
+            <div class="pannel-border text-center" style="width: 900px;">
+                <!-- <form name=visit"> -->
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-dark" id="visitName">비로그인</span>
+                    </div>
+
+                    <input type="text" name="" id="visitText" class="form-control" maxlength="35"
+                        placeholder="로그인이 필요합니다." disabled="disabled">
+
+                    <div class="input-group-append">
+                        <button class="btn btn-dark" type="button" id="btnVisit">작성하기</button>
+                    </div>
+                </div>
+                <!-- </form> -->
+
+                <table class="table" style="margin-top: 50px;">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">text</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableVisit">
+                    </tbody>
+                </table>
+
+                <div class="btn-group mr-2" id="visitPageChange" role="group" aria-label="First group"
+                    style="margin-top: 30px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- 회원가입 페이지 -->
+        <div class="pannel">
+            <div class="pannel-border" style="width: 480px;">
+                <h1 class="mb-5 text-center text-dark">
+                    회원 가입
+                </h1>
+                <form name="reg">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 아이디 -->
+                                <input type="text" onchange="checkId(this,reg.userPW);" name="userId" id="regId"
+                                    class="form-control" placeholder="아이디">
+                                <div class="invalid-feedback feedback" id="feedbackId">
+                                    첫 문자가 영문자이고 영문자 숫자 조합 6 ~ 15 자리로 입력
+                                </div>
+                                <div class="valid-feedback feedback">
+                                    사용 가능한 아이디
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 비밀번호 -->
+                                <input type="password" onchange="checkPW(this);" name="userPW" id="regPW"
+                                    class="form-control" placeholder="비밀번호 (영문자, 숫자, 특수문자 조합)">
+                                <div class="invalid-feedback feedback">
+                                    영문자,숫자,특수문자 조합, 6 ~ 15 자리 이내로 입력
+                                </div>
+                                <div class="valid-feedback feedback">
+                                    사용 가능한 비밀번호
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 비밀번호 확인 -->
+                                <input type="password" onchange="checkPWC(this);" name="userPWC" id="regPWC"
+                                    class="form-control" placeholder="비밀번호 확인">
+                                <div class="invalid-feedback feedback">
+                                    서로 다른 비밀번호
+                                </div>
+                                <div class="valid-feedback feedback">
+                                    동일한 비밀번호
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 성 -->
+                                <input type="text" onchange="checkName(this,reg.userLName);" name="userFName"
+                                    id="regFName" class="form-control" placeholder="성">
+                                <div class="invalid-feedback feedback">
+                                    성을 입력
+                                </div>
+                            </div>
+                            <div class="col">
+                                <!-- 명 -->
+                                <input type="text" onchange="checkName(this,this);" name="userLName" id="regLName"
+                                    class="form-control" placeholder="이름">
+                                <div class="invalid-feedback feedback">
+                                    이름을 입력
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 연 -->
+                                <select class="form-control" id="regYear" name="userYear"
+                                    onchange="checkSelect(this,5);"></select>
+                                <div class="invalid-feedback feedback">
+                                    출생연도를 입력
+                                </div>
+                            </div>
+                            <div class="col">
+                                <select class="form-control" id="regMonth" name="userMonth"
+                                    onchange="insertDate(); checkSelect(this,6);">
+                                    <option value="" disabled="disabled" selected="selected" hidden="hidden">--</option>
+                                    <option value="1">January</option>
+                                    <option value="2">Feburary</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                                <div class="invalid-feedback feedback">
+                                    출생월을 입력
+                                </div>
+                            </div>
+                            <div class="col">
+                                <select class="form-control" id="regDate" name="userDate"
+                                    onchange="checkSelect(this,7);">
+                                    <option value="">--</option>
+                                </select>
+                                <div class="invalid-feedback feedback">
+                                    출생일을 입력
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 전화번호 -->
+                                <input type="text" onchange="checkPhone(this,this);" name="userPhone" id="regPhone"
+                                    class="form-control" placeholder="연락처 ('-' 생략)">
+                                <div class="invalid-feedback feedback">
+                                    '-'를 생략하고 연락처 10~11 자리 입력
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <a name="submit" href="#" class="btn btn-dark btn-block btn-lg btn-catch" id="btnRegSubmit"
+                            onclick="regSubmit();" role="button">회원 가입</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 자기소개 페이지 -->
+        <div class="pannel">
+            <div class="pannel-border text-center" style="width: 400px;">
+                <h1 id="title">자기소개</h1>
+                <p>장예찬, 1995, 경기도 이천</p>
+                <div>
+                    <img src="images/in_1.JPG" alt="" width="350px" class="rounded">
+                </div>
+            </div>
+        </div>
+
+        <!-- 관심 페이지 -->
+        <div class="pannel">
+            <div class="pannel-border text-center" style="width: 900px;">
+                <h1>점심 뭐 먹지 ?</h1>
+                <div id="foodImg" class="foodAnimation">
+                    <img src="images/food.png" alt="">
+                </div>
+            </div> 
+        </div>
+
+        <!-- 로드맵 페이지 -->
+        <div class="pannel">
+            <div class="pannel-border text-center" style="width: 1000px;">
+                <h1>로드맵</h1>
+                <div id="roadMap">
+                    <div class="row">
+                        <div class="col btn-catch">
+                            <h4 style="margin-top: 35px;">
+                                <span class="badge badge-pill badge-dark">Back-end</span>
+                            </h4>
+                        </div>
+                        <div class=" btn-catch">
+                            <img src="images/next.png" alt="" class="img-next">
+                        </div>
+                        <div class="col btn-catch">
+                            <div class="row">
+                                <div class="col">
+                                    <h4>
+                                        <span class="badge badge-pill badge-dark">Pick a Language</span>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <ul>
+                                        <li>Java</li>
+                                        <li>Python</li>
+                                        <li>PHP</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-catch">
+                            <img src="images/next.png" alt="" class="img-next">
+                        </div>
+                        <div class="col btn-catch">
+                            <div class="row">
+                                <div class="col">
+                                    <h4>
+                                        <span class="badge badge-pill badge-dark">Learn Databases</span>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    Oracle
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-catch">
+                            <img src="images/next.png" alt="" class="img-next">
+                        </div>
+                        <div class="col btn-catch">
+                            <div class="row">
+                                <div class="col">
+                                    <h4>
+                                        <span class="badge badge-pill badge-dark">AI Dev</span>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="col">
+                                        <ul>
+                                            <li>Java</li>
+                                            <li>Python</li>
+                                            <li>R</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 참고자료 페이지 -->
+        <div class="pannel">
+            <div class="pannel-border" style="width: 900px;">
+                <!-- <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>
+                                <a href="https://getbootstrap.com/docs/4.3/getting-started/introduction/"
+                                    target="_blank">Bootstrap4</a>
+                            </td>
+                            <td>CSS, Jquery</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>
+                                <a href="https://animista.net/" target="_blank">Animista</a>
+                            </td>
+                            <td>CSS (animation)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>
+                                <a href="https://fonts.google.com/" target="_blank">GoogleFont</a>
+                            </td>
+                            <td>Font</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>
+                                <a href="https://iconmonstr.com/" target="_blank">IconMonster</a>
+                            </td>
+                            <td>Icon Image</td>
+                        </tr>
+                    </tbody>
+                </table> -->
+            </div>
+        </div>
+
+        <!-- 아이디 찾기 페이지 -->
+        <div class="pannel">
+            <div class="pannel-border" style="width: 440px;">
+                <div class=" text-center">
+                    <div class="btn-group mr-2 text-center" role="group" aria-label="First group"
+                        style="margin-bottom: 30px;">
+                        <button type='button' class='btn btn-outline-dark active' onclick='pannelSwap(6);'>아이디
+                            찾기</button>
+                        <button type='button' class='btn btn-outline-dark' onclick='pannelSwap(7);'>비밀번호 찾기</button>
+                        <button type='button' class='btn btn-outline-dark' onclick='pannelSwap(1);'>회원 가입</button>
+                    </div>
+                    <h2 class="mb-5 text-dark">
+                        아이디 찾기
+                    </h2>
+                </div>
+                <form name="searchId" id="formSearchId">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 성명 -->
+                                <input type="text" onchange="checkNull(this,searchIdBirth); searchIdActive();"
+                                    name="userName" id="searchIdName" class="form-control" placeholder="성명">
+                                <div class="invalid-feedback feedback">
+                                    성명을 입력
+                                </div>
+                                <div class="valid-feedback feedback">
+                                    성명 확인
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 생년월일 -->
+                                <input type="text" onchange="checkNull(this,searchIdPhone); searchIdActive();"
+                                    name="userBirth" id="searchIdBirth" class="form-control" placeholder="생년월일">
+                                <div class="invalid-feedback feedback">
+                                    생년월일을 입력
+                                </div>
+                                <div class="valid-feedback feedback">
+                                    생년월일 확인
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 아이디 -->
+                                <input type="text" onchange="checkNull(this,this); searchIdActive();" name="userPhone"
+                                    id="searchIdPhone" class="form-control" placeholder="연락처">
+                                <div class="invalid-feedback feedback">
+                                    연락처를 입력
+                                </div>
+                                <div class="valid-feedback feedback">
+                                    연락처 확인
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <a name="submit" href="#" class="btn btn-dark btn-block btn-lg btn-catch" id="btnSearchIdSubmit"
+                            onclick="" role="button">아이디 찾기</a>
+                    </div>
+                </form>
+                <div class="form-hidden" id="resultSearchId">
+                    <div id="searchIdList" class="text-center">
+                        
+                    </div>
+                    <button class="btn btn-dark btn-block" style="margin-top: 100px" id="bntReSearchId">돌아가기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 비밀번호 찾기 페이지 -->
+        <div class="pannel">
+            <div class="pannel-border" style="width: 440px;">
+                <div class=" text-center">
+                    <div class="btn-group mr-2 text-center" role="group" aria-label="First group"
+                        style="margin-bottom: 30px;">
+                        <button type='button' class='btn btn-outline-dark' onclick='pannelSwap(6);'>아이디 찾기</button>
+                        <button type='button' class='btn btn-outline-dark active' onclick='pannelSwap(7);'>비밀번호
+                            찾기</button>
+                        <button type='button' class='btn btn-outline-dark' onclick='pannelSwap(1);'>회원 가입</button>
+                    </div>
+                    <h2 class="mb-5 text-dark">
+                        비밀번호 찾기
+                    </h2>
+                </div>
+                <form name="searchId" id="formSearchPW">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 아이디 -->
+                                <input type="text" onchange="checkNull(this,searchPWBirth); searchPWActive();"
+                                    name="userId" id="searchPWId" class="form-control" placeholder="아이디">
+                                <div class="invalid-feedback feedback">
+                                    아이디를 입력
+                                </div>
+                                <div class="valid-feedback feedback">
+                                    아이디 확인
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 생년월일 -->
+                                <input type="text" onchange="checkNull(this,searchPWPhone); searchPWActive();"
+                                    name="userBirth" id="searchPWBirth" class="form-control" placeholder="생년월일">
+                                <div class="invalid-feedback feedback">
+                                    생년월일을 입력
+                                </div>
+                                <div class="valid-feedback feedback">
+                                    생년월일 확인
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <!-- 아이디 -->
+                                <input type="text" onchange="checkNull(this,this); searchPWActive();" name="userPhone"
+                                    id="searchPWPhone" class="form-control" placeholder="연락처">
+                                <div class="invalid-feedback feedback">
+                                    연락처를 입력
+                                </div>
+                                <div class="valid-feedback feedback">
+                                    연락처 확인
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <a href="#" class="btn btn-dark btn-block btn-lg btn-catch" id="btnSearchPWSubmit" role="button">비밀번호 찾기</a>
+                    </div>
+                </form>
+                <div class="form-hidden" id="resultSearchPW">
+                    <div id="searchPWList" class="text-center">
+                    </div>
+                    <button class="btn btn-dark btn-block" style="margin-top: 100px" id="btnReSearchPW">돌아가기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 회원 정보 페이지 -->
+        <div class="pannel">
+            <div class="pannel-border text-center" style="width: 800px;">
+
+                <!-- 회원 검색 바 -->
+                <div name="selectUser"> 
+                    <!-- <form > -->
+                    <div class="input-group input-group">
+                        <div class="input-group-prepend">
+                            <select class="custom-select" id="selectType">
+                                <option value="name" selected>성명</option>
+                                <option value="id">아이디</option>
+                                <option value="phone">전화번호</option>
+                            </select>
+                        </div>
+
+                        <input type="text" name="" id="selectUser" class="form-control" placeholder="회원 검색">
+
+                        <div class="input-group-append">
+                            <button class="btn btn-dark" type="button" id="btnSelectUser"">검색</button>
+                        </div>
+                    </div>
+                <!-- </form> -->
+                </div>
+
+                    <!-- 회원 리스트 테이블 -->
+                <table class=" table text-center" style="margin-top: 50px;">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">아이디</th>
+                            <th scope="col">성명</th>
+                            <th scope="col">생년월일</th>
+                            <th scope="col">연락처</th>
+                            <th scope="col">가입일</th>
+                            <th scope="col">삭제</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableUser">
+                    </tbody>
+                </table>
+
+                <div class="btn-group mr-2" id="userPageChange" role="group" aria-label="First group" style="margin-top: 30px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- 게시판 -->
+        <div class="pannel">
+            <div class="pannel-border" style="width: 800px;">
+                <h3 class="text-center text-dark">게시판</h3>
+            </div>
+        </div>
+    </article>
+
+    <!-- 자바스크립트 -->
+    <script>
+        //전역변수
+        var cntReg = [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        ];
+        var boolVisit = false;
+        var roadMapBool = true;
+        var pageSplit = 6;
+        var login;
+
+        // 커튼
+        function snowDrop(){
+            var $inner = $("#snowZip");
+            var line = 14;
+            var drop = "*";
+            var rndSize;
+            var rndWidth;
+
+            for(var i =0; i < line; i++){
+                $inner.append("<div class='snow'></div>")
+            }
+
+            var $snow = $(".snow");
+
+            for(var j = 0; j < line; j++){
+
+                for(var i = 0; i < 10; i++){
+                    rndWidth = Math.random()*100;
+                    rndSize = Math.round(Math.random()*7)+1;
+                    $snow.eq(j).append("<span style='left: " + rndWidth + "vw;''><h" + rndSize + ">" + drop + "</h" + rndSize + "></span>");
+                    $snow.eq(j).css("animation-delay",j*0.3+"s");
+                    $snow.eq(j).css("animation-duration",2+(j/line)*j+"s");
+                }
+            }
+        }
+
+        curtainCall.onclick = function(){
+            $(".curtain").addClass("curtain-call");
+            sesSave("jyc_curtain",true);
+            pannelSwap(0);
+        }
+
+        snowDrop();
+
+        //눈에서 별로
+        (()=>{
+            var $drop = $(".snow");
+
+            $("#curtainCall").hover(function(){
+                $drop.css("color","lightgoldenrodyellow");
+                $drop.children().children().text("★");
+            },function(){
+                $drop.css("color","rgb(206, 231, 245)");
+                $drop.children().children().text("*");
+            });
+        })();
+
+        function oneTimeCurtain(){
+            var ses = sesLoad("jyc_curtain");
+            if(ses == null)
+                return;
+            $(".curtain").css("display","none");
+            pannelSwap(0);
+        }
+
+        function Visit(visitId, visitName, visitText, visitDate) {
+            this.visitId = visitId;
+            this.visitName = visitName;
+            this.visitText = visitText;
+            this.visitDate = visitDate;
+        }
+
+        function User(userId, userPW, userFName, userLName, userBirth, userPhone, userDate, userGrant) {
+            this.userId = userId;
+            this.userPW = userPW;
+            this.userFName = userFName;
+            this.userLName = userLName;
+            this.userBirth = userBirth;
+            this.userPhone = userPhone;
+            this.userDate = userDate;
+            this.userGrant = userGrant;
+        }
+
+        function Login(userId, userPW, userFName, userLName, userGrant){
+            this.userId = userId;
+            this.userPW = userPW;
+            this.userFName = userFName;
+            this.userLName = userLName;
+            this.userGrant = userGrant;
+        }
+
+        //즉시실행
+        setting();
+        visitPageLoad(0);
+        userListLoad(0);
+        loginReload();
+        oneTimeCurtain();
+
+        //이벤트
+        btnVisit.onclick = function () {
+            visitInsert();
+        }
+        visitText.onchange = function () {
+            if (visitText.value.length == 0) {
+                return;
+            }
+            visitInsert();
+        }
+        btnSelectUser.onclick = function () {
+            searchUser();
+        }
+        selectUser.onchange = function () {
+            searchUser();
+        }
+        selectType.onchange = function () {
+            selectUser.value = "";
+            selectUser.focus();
+        }
+        loginId.onchange = function(){
+            loginPW.focus();
+        }
+        loginPW.onchange = function(){
+            btnLogin.focus();
+        }
+        foodImg.onclick = function(){
+            var $img = $(this);
+            var arr = ["곱창고.png","담소.png","명주.png","삼원아케이드.jpg","석기정.png","소풍.jpg","역전우동.png","흑다돈.png","에그드랍.jpg"];
+            var rnd = Math.round(Math.random()*(arr.length-1));
+
+            $(this).removeClass("foodAnimation");
+            $img.html("<img class='foodShow' src='images/"+arr[rnd]+"'>");
+        }
+
+        // 로드맵 애니메이션
+        function roadMapAnimation(){
+            var $div = $("#roadMap > .row").children();
+            var className = "roadMap-on";
+            var time = 0.5;
+            var delay = 0.15;
+            roadMapBool = true;
+
+            $div.addClass(className);
+
+            for(var i =0; i<=6;i++){
+                $div.eq(i).css("animation-delay",(time+delay*i)+"s");
+            }
+        }
+
+        function roadMapReset(){
+            var $div = $("#roadMap > .row").children();
+            $div.removeClass("roadMap-on");
+            roadMapBool = false;
+        }
+
+        // 로그인
+        btnLogin.onclick = function(){
+            var id = loginId.value;
+            var pw = loginPW.value;
+            var bool = false;
+            var name;
+            var users = wepLoad("jyc_users");
+
+            for(var i in users){
+                if(users[i].userId == id){
+                    if(users[i].userPW == pw){
+                        login = new Login(users[i].userId, users[i].userPW, users[i].userFName, users[i].userLName, users[i].userGrant);
+                        sesSave("jyc_login",login);
+
+                        loginReload();
+                        pannelSwap(0);
+                        return;
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
+            alert("로그인 오류 (틀린 아이디 혹은 비밀번호)");
+        }
+
+        function loginReload(){
+            var login = sesLoad("jyc_login");
+
+            if(login != null){
+                name = login.userFName + login.userLName;
+                loginInfo.innerHTML = name + "님 반갑다"
+                visitName.innerHTML = name;
+
+                loginAfter.className = "navbar-nav";
+                loginBefore.className = "navbar-nav form-hidden";
+                loginId.value = "";
+                loginPW.value = "";
+
+                $("#visitText").attr("placeholder","방명록을 남겨주세요.");
+                $("#visitText").removeAttr("disabled");
+            }
+            else{
+                loginAfter.className = "navbar-nav form-hidden";
+                loginBefore.className = "navbar-nav";
+                visitName.innerHTML = "비로그인"
+                $("#visitText").attr("placeholder","로그인이 필요합니다.");
+                $("#visitText").attr("disabled","disabled");
+            }
+
+           
+        }
+        // 로그아웃
+        btnLogout.onclick = function(){
+            sessionStorage.removeItem("jyc_login");
+            loginReload();
+            pannelSwap(0);
+        }
+        // 아이디 찾기
+        btnSearchIdSubmit.onclick = function () {
+            var users = wepLoad("jyc_users");
+            var cnt = 0;
+            var name = searchIdName.value;
+            var birth = searchIdBirth.value;
+            var phone = searchIdPhone.value;
+            var scName;
+            var scBirth;
+            var scPhone;
+
+            if(!checkNull(searchIdName,searchIdName)){
+                return;
+            }
+            if(!checkNull(searchIdBirth,searchIdBirth)){
+                return;
+            }
+            if(!checkNull(searchIdPhone,searchIdPhone)){
+                return;
+            }
+
+            for(var i in users){
+                scName = users[i].userFName + users[i].userLName;
+                scBirth = users[i].userBirth;
+                scPhone = users[i].userPhone;
+
+                if(scName == name && scBirth == birth && scPhone == phone){
+                    cnt++;
+                    searchIdList.innerHTML = "<h5 class='text-info'>"+ users[i].userId + "</h5><br>";
+                }
+            }
+
+            if(cnt == 0){
+                searchIdList.innerHTML = "<h3 class='text-danger'>찾는 아이디가 없습니다.</h3>";
+            }
+
+            resultSearchId.classList.remove("form-hidden");
+            formSearchId.classList.add("form-hidden");
+        }
+        // 아이디 찾기 리턴
+        bntReSearchId.onclick = function(){
+            reSearchId();
+        }
+        // 비밀번호 찾기
+        btnSearchPWSubmit.onclick = function () {
+            var users = wepLoad("jyc_users");
+            var cnt = 0;
+            var id = searchPWId.value;
+            var birth = searchPWBirth.value;
+            var phone = searchPWPhone.value;
+            var scId;
+            var scBirth;
+            var scPhone;
+
+            if(!checkNull(searchPWId,searchPWId)){
+                return;
+            }
+            if(!checkNull(searchPWBirth,searchPWBirth)){
+                return;
+            }
+            if(!checkNull(searchPWPhone,searchPWPhone)){
+                return;
+            }
+
+            for(var i in users){
+                scId = users[i].userId;
+                scBirth = users[i].userBirth;
+                scPhone = users[i].userPhone;
+
+                console.log(id + ',' + birth + ',' + phone);
+                console.log(scId + ',' + scBirth + ',' + scPhone);
+
+                if(scId == id && scBirth == birth && scPhone == phone){
+                    cnt++;
+                    searchPWList.innerHTML = "<h5 class='text-info'>"+ users[i].userPW + "</h5><br>";
+                }
+            }
+
+            if(cnt == 0){
+                searchPWList.innerHTML = "<h3 class='text-danger'>찾는 비밀번호가 없습니다.</h3>";
+            }
+
+            resultSearchPW.classList.remove("form-hidden");
+            formSearchPW.classList.add("form-hidden");
+        }
+        // 비밀번호 찾기 리턴
+        btnReSearchPW.onclick = function(){
+            reSearchPW();
+        }
+
+        // localStorage
+        function wepSave(key, object) {
+            var save = JSON.stringify(object);
+            localStorage.setItem(key, save);
+        }
+
+        function wepLoad(key){
+            var object = localStorage.getItem(key);
+            var load = JSON.parse(object);
+            return load;
+        }
+
+        // Sessionstorage
+        function sesSave(key,object){
+            var save = JSON.stringify(object);
+            sessionStorage.setItem(key, save);
+        }
+
+        function sesLoad(key,object){
+            var object = sessionStorage.getItem(key);
+            var load = JSON.parse(object);
+            return load;
+        }
+        
+        // 초기 세팅
+        function setting(){
+            var users = wepLoad("jyc_users");
+            var visits = wepLoad("jyc_visits");
+
+            if(users == null){
+                users = [];
+                users.push(new User('qwqw0414', 'zxc123**', '가', '나다', '19950414', '01072821234', '2019.11.17',false));
+                users.push(new User('admin', 'zxc123**', '관', '리자', '19940404', '01012341234', '2019.11.17', true));
+                users.push(new User('asd123', 'zxc123**', '창', '모', '19940704', '01046467978', '2019.11.17', false));
+                users.push(new User('zxc123', 'zxc123**', '빈', '지노', '19940804', '01046467977', '2019.11.17', false));
+                users.push(new User('qwe123', 'zxc123**', '양', '다일', '19940904', '01046467976', '2019.11.17', false));
+                users.push(new User('afaf1313', 'zxc123**', '혁', '오', '19941004', '01046467975', '2019.11.17', false));
+                users.push(new User('qeqe1313', 'zxc123**', '송', '하예', '19941104', '01046467974', '2019.11.17', false));
+                users.push(new User('dsds1331', 'zxc123**', '모', '트', '19941225', '01046467973', '2019.11.17', false));
+                users.push(new User('xcxc1313', 'zxc123**', '케', '이시', '19941111', '01046467972', '2019.11.17', false));
+                users.push(new User('qqww1313', 'zxc123**', '폴', '킴', '19940414', '01046467971', '2019.11.17', false));
+                users.push(new User('zsc1313', 'zxc123**', '정', '승환', '19940414', '01046467971', '2019.11.17', false));
+                users.push(new User('ydd1313', 'zxc123**', '염', '따', '19940414', '01046467971', '2019.11.17', false));
+            }
+
+            if(visits == null){
+                visits = [];
+                visits.unshift(new Visit("qwqw0414", "가나다", "가나다라마바사아자차타파하", "2019.11.16"));
+                visits.unshift(new Visit("qwqw0414", "가나다", "가나다라마바사아자차타파하", "2019.11.16"));
+                visits.unshift(new Visit("qwqw0414", "가나다", "가나다라마바사아자차타파하", "2019.11.16"));
+                visits.unshift(new Visit("qwqw0414", "가나다", "가나다라마바사아자차타파하", "2019.11.16"));
+                visits.unshift(new Visit("ydd1313", "염따", "빠끄", "2019.11.16"));
+                visits.unshift(new Visit("asd123", "창모", "아직 잊지 못하고 아주 달콤히 맴돌아", "2019.11.16"));
+                visits.unshift(new Visit("dsds1331", "모트", "맘에 안 드는데 넌 왜 아직까지 내 옆에 있어", "2019.11.16"));
+                visits.unshift(new Visit("qeqe1313", "송하예", "가끔 네 욕을 해도 내 편이 되주는 착한 사람", "2019.11.16"));
+                visits.unshift(new Visit("qwe123", "양다일", "미소짓던 그 표정이 주고받던 연락들이", "2019.11.16"));
+                visits.unshift(new Visit("xcxc1313", "케이시", "이젠 내가 편하니 작은", "2019.11.16"));
+                visits.unshift(new Visit("zsc1313", "정승환", "왜 너에겐 그렇게 어려운지", "2019.11.16"));
+                visits.unshift(new Visit("qqww1313", "폴킴", "너를 만나 참 행복했어 나 이토록", "2019.11.16"));
+            }
+
+            wepSave("jyc_users", users);
+            wepSave("jyc_visits", visits);
+        }
+
+        // 아이디 찾기 폼 초기화
+        function reSearchId(){
+            searchIdName.value = "";
+            searchIdBirth.value = "";
+            searchIdPhone.value = "";
+
+            searchIdName.className = "form-control";
+            searchIdBirth.className = "form-control";
+            searchIdPhone.className = "form-control";
+
+            resultSearchId.className = "form-hidden";
+            formSearchId.className = ""
+        }
+        
+        // 비밀번호 찾기 폼 초기화
+        function reSearchPW(){
+            searchPWId.value = "";
+            searchPWBirth.value = "";
+            searchPWPhone.value = "";
+
+            searchPWId.className = "form-control";
+            searchPWBirth.className = "form-control";
+            searchPWPhone.className = "form-control";
+
+            resultSearchPW.className = "form-hidden";
+            formSearchPW.className = ""
+        }
+        
+        // 회원가입 폼 초기화
+        function reReg(){
+            regId.value = "";
+            regPW.value = "";
+            regPWC.value = "";
+            regFName.value = "";
+            regLName.value = "";
+            regYear.value = "";
+            regMonth.value = "";
+            regDate.value = "";
+            regPhone.value = "";
+
+            regId.className = "form-control";
+            regPW.className = "form-control";
+            regPWC.className = "form-control";
+            regFName.className = "form-control";
+            regLName.className = "form-control";
+            regYear.className = "form-control";
+            regMonth.className = "form-control";
+            regDate.className = "form-control";
+            regPhone.className = "form-control";
+        }
+
+        // 게시글 객체 생성
+        function visitInsert() {
+            var name = login.userFName + login.userLName;
+            var id = login.userId;
+            var text = visitText.value.trim();
+            var date = now();
+            var visits = wepLoad("jyc_visits");
+
+            if(visits == null){
+                visits = [];
+            }
+
+            // 작성글 유효성 검사
+            if (text.length == 0) {
+                return;
+            }
+
+            // 작성글 초기화
+            visitText.value = "";
+
+            // 작성글 객체 생성
+            visits.unshift(new Visit(id, name, text, date));
+            wepSave("jyc_visits",visits);
+            // 게시글 로드 애니메이션 허용
+            boolVisit = true;
+
+            visitPageLoad(0);
+        }
+
+        // 방명록 페이지 불러오기
+        function visitPageLoad(page) {
+            var name;
+            var text;
+            var date;
+            var html = "";
+            var max;
+            var show = "text-show";
+            var drop = "text-drop";
+            var active = "";
+            var visits = wepLoad("jyc_visits");
+
+            //게시글 불러오기
+            try {
+                for (var i = 0; i < pageSplit; i++) {
+                    name = visits[i + page * pageSplit].visitName;
+                    text = visits[i + page * pageSplit].visitText;
+                    date = visits[i + page * pageSplit].visitDate;
+
+                    if (!boolVisit) {
+                        show = "text-fastshow";
+                        drop = "text-fastshow";
+                    }
+
+                    if (i == 0) {
+                        html += "<tr class='" + show + "'><th>" + name + "</th><td>" + text + "</td><td>" + date + "</td></tr>";
+                    } else {
+                        html += "<tr class='" + drop + "'><th>" + name + "</th><td>" + text + "</td><td>" + date + "</td></tr>";
+                    }
+
+                }
+            } catch (error) { }
+
+            tableVisit.innerHTML = html;
+
+            //페이지 전환 버튼 동기화
+            html = "";
+
+            max = visits.length / pageSplit;
+
+            for (var i = 0; i < max; i++) {
+
+                if (page == i) {
+                    active = "active";
+                }
+                else {
+                    active = "";
+                }
+
+                html += "<button type='button' class='" + active + " btn btn-outline-dark' onclick='visitPageLoad(" + i + ");'>" + (i + 1) + "</button>";
+            }
+
+            boolVisit = false;
+            visitPageChange.innerHTML = html;
+        }
+
+        // 회원 정보 리스트 불러오기
+        function userListLoad(page) {
+            var id;
+            var fname;
+            var lname;
+            var birth;
+            var phone;
+            var date;
+            var html = "";
+            var users = wepLoad("jyc_users");
+            //회원 정보 불러오기
+            try {
+                for (var i = 0; i < pageSplit; i++) {
+                    id = users[i + page * pageSplit].userId;
+                    fname = users[i + page * pageSplit].userFName;
+                    lname = users[i + page * pageSplit].userLName;
+                    birth = users[i + page * pageSplit].userBirth;
+                    phone = users[i + page * pageSplit].userPhone;
+                    date = users[i + page * pageSplit].userDate;
+
+                    html += "<tr class=''><th>" + id + "</th><td>" + fname + lname +
+                        "</td><td>" + birth + "</td><td>" + phone +
+                        "</td><td>" + date +
+                        "</td><td><button class='btn btn-danger btn-sm' onclick=\"deleteUser(\'" + id + "\');\">x</button>" +
+                        "</td></tr>";
+
+                }
+            } catch (error) { }
+
+            tableUser.innerHTML = html;
+
+            //페이지 전환 버튼 동기화
+            html = "";
+            try {
+                var max = users.length / pageSplit;
+                
+                for (var i = 0; i < max; i++) {
+                    
+                    if (page == i) {
+                        active = "active";
+                    }
+                    else {
+                        active = "";
+                    }
+                    
+                    html += "<button type='button' class='" + active + " btn btn-outline-dark' onclick='userListLoad(" + i + ");'>" + (i + 1) + "</button>";
+                }
+                
+                userPageChange.innerHTML = html;
+            } catch (error) {}
+        }
+
+        // 회원 삭제
+        function deleteUser(id) {
+            var userId;
+            var login = sesLoad("jyc_login");
+            var users = wepLoad("jyc_users");
+            try {
+                if(login.userGrant != true){
+                    alert("권한이 없습니다.");
+                    return;
+                }
+                
+                for (var i in users) {
+                    userId = users[i].userId;
+                    if (userId == id) {
+                        if(users[i].userGrant){
+                            alert("관리자계정 삭제 불가")
+                            return;
+                        }
+                        users.splice(i, 1);
+                    }
+                }
+                wepSave("jyc_users",users);
+                deleteAllVisit(id);
+                userListLoad(0);
+            } catch (error) {
+                alert("권한이 없습니다.");
+                return;
+            }
+        }
+
+        // 제외된 회원 게시글 제거
+        function deleteAllVisit(id){
+            var userId;
+            var visits = wepLoad("jyc_visits");
+            var afterVisits = [];
+
+            for(var i in visits){
+                userId = visits[i].visitId;
+                if(userId != id){
+                    afterVisits.push(visits[i]);
+                }
+            }
+            wepSave("jyc_visits",afterVisits);
+            visitPageLoad(0);
+        }
+
+        // 라이크 검색
+        function likeSearch(str, key){
+
+            return !(str == str.split(key,1));
+
+        }
+
+        // 회원 정보 검색
+        function searchUser() {
+            var users = wepLoad("jyc_users");
+            var key = selectUser.value;
+            var type = selectType.value;
+            var selectUserArr = [];
+            var name;
+            var html = "";
+
+            //유효성 검사
+            if (key.length == 0) {
+                userListLoad(0);
+                return;
+            }
+
+            for (var i in users) {
+
+                // 이름 검색
+                if (type == "name") {
+                    name = users[i].userFName;
+                    name += users[i].userLName;
+
+                    if (likeSearch(name,key)) {
+                        selectUserArr.push(users[i]);
+                    }
+                }
+
+                // 아이디 검색
+                else if (type == "id") {
+                    if (likeSearch(users[i].userId,key)) {
+                        selectUserArr.push(users[i]);
+                    }
+                }
+
+                // 연락처 검색
+                else {
+                    if (likeSearch(users[i].userPhone,key)) {
+                        selectUserArr.push(users[i]);
+                    }
+                }
+            }
+
+            try {
+                for (var i in selectUserArr) {
+                    id = selectUserArr[i].userId;
+                    fname = selectUserArr[i].userFName;
+                    lname = selectUserArr[i].userLName;
+                    birth = selectUserArr[i].userBirth;
+                    phone = selectUserArr[i].userPhone;
+                    date = selectUserArr[i].userDate;
+
+                    html += "<tr class=''><th>" + id + "</th><td>" + fname + lname +
+                        "</td><td>" + birth + "</td><td>" + phone +
+                        "</td><td>" + date +
+                        "</td><td><button class='btn btn-danger btn-sm' onclick=\"deleteUser(\'" + id + "\');\">삭제</button>" +
+                        "</td></tr>";
+
+                }
+            } catch (error) { }
+
+            tableUser.innerHTML = html;
+            userPageChange.innerHTML = "";
+        }
+
+        // 회원 정보 추가
+        function insertUser(userId, userPW, userFName, userLName, userBirth, userPhone) {
+            var userDate = now();
+            var users = wepLoad("jyc_users");
+            
+            if(users == null){
+                users = [];
+            }
+
+            users.push(new User(userId, userPW, userFName, userLName, userBirth, userPhone, userDate, false));
+            wepSave("jyc_users",users);
+        }
+
+        // 현재 년,월,일 리턴
+        function now() {
+            var year = new Date().getFullYear();
+            var month = new Date().getMonth() + 1;
+            var date = new Date().getDate();
+            var str = year + "." + month + "." + date;
+            return str;
+        }
+
+        // 회원 가입
+        function regSubmit() {
+            if (!checkId(regId, regId))
+                return;
+
+            if (!checkPW(regPW, regPW))
+                return;
+
+            if (!checkPWC(regPWC, regPWC))
+                return;
+
+            if (!checkName(regFName, regLName))
+                return;
+
+            if (!checkName(regLName, regLName))
+                return;
+
+            if (!checkSelect(regYear, 5))
+                return;
+
+            if (!checkSelect(regMonth, 6))
+                return;
+
+            if (!checkSelect(regDate, 7))
+                return;
+
+            if (!checkPhone(regPhone, regPhone))
+                return;
+
+            alert("회원가입 성공");
+
+            var birth = birthOutput(regYear.value, regMonth.value, regDate.value);
+            insertUser(regId.value, regPW.value, regFName.value, regLName.value, birth, regPhone.value);
+
+            // reg.submit();
+            pannelSwap(0);
+        }
+
+        // 생년월일 조합
+        function birthOutput(year, month, date) {
+            var birth;
+
+            birth = "" + year;
+
+            if (month.length < 2)
+                birth += "0" + month;
+            else
+                birth += "" + month;
+
+            if (date.length < 2)
+                birth += "0" + date;
+            else
+                birth += "" + date;
+
+            return birth;
+        }
+
+        // 아이디 유효성 검사
+        function checkId(comp, next) {
+            var regExp = /^[a-z][a-z\d]{5,14}$/;
+            var str = comp.value;
+            var bool = regExpTest(regExp, str);
+
+            if(idPrimaryCheck(str) && bool){
+                feedbackId.innerHTML = "중복된 아이디입니다.";
+                bool = false;
+            }
+            else{
+                feedbackId.innerHTML = "첫 문자가 영문자이고 영문자 숫자 조합 6 ~ 15 자리로 입력";
+            }
+
+            regActive(bool, 0);
+            checkClass(bool, comp, next);
+
+            return bool;
+        }
+
+        // 아이디 중복 검사 (true : 중복)
+        function idPrimaryCheck(id){
+            var users = wepLoad("jyc_users");
+
+            for(var i in users){
+                if(users[i].userId == id){
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // 비밀번호 유효성 검사
+        function checkPW(comp) {
+            var regExp = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g;
+            var str = comp.value;
+            var bool = regExpTest(regExp, str);
+
+            regActive(bool, 1);
+            checkClass(bool, comp, regPWC);
+
+            return bool;
+        }
+
+        // 비밀번호 확인
+        function checkPWC(comp) {
+            var bool = false;
+            var pw = regPW.value;
+            var pwc = regPWC.value;
+
+            if (pw == pwc)
+                bool = true;
+
+            regActive(bool, 2);
+            checkClass(bool, comp, regFName);
+
+            return bool;
+        }
+
+        // 성명 유효성 검사
+        function checkName(comp, next) {
+            var regExp = /^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]{1,}$/;
+            var str = comp.value;
+            var bool = regExpTest(regExp, str);
+
+            if (comp == next)
+                regActive(bool, 4);
+            else
+                regActive(bool, 3);
+
+            checkClass(bool, comp, next);
+
+            return bool;
+        }
+
+        //생년월일 유효성 검사
+        function checkSelect(comp, index) {
+            var bool = comp.value != "";
+
+            regActive(bool, index);
+            checkClass(bool, comp, comp);
+
+            return bool;
+        }
+
+        // 연락처 유효성 검사
+        function checkPhone(comp, next) {
+            var regExp = /^\d{10,11}$/;
+            var str = comp.value;
+            var bool = regExpTest(regExp, str);
+
+            regActive(bool, 8);
+            checkClass(bool, comp, next);
+
+            return bool;
+        }
+
+        // 공백 유효성 검사
+        function checkNull(comp, next) {
+            var regExp = /^./;
+            var str = comp.value;
+            var bool = regExpTest(regExp, str);
+
+            checkClass(bool, comp, next);
+
+            return bool;
+        }
+
+        //회원가입 버튼 활성화
+        function regActive(bool, index) {
+
+            cntReg[index] = bool;
+
+            for (var i in cntReg) {
+                if (!cntReg[i])
+                    return;
+            }
+
+            btnRegSubmit
+                .classList
+                .remove("btn-catch");
+            btnRegSubmit
+                .classList
+                .add("btn-drop");
+        }
+
+        //아이디 검색 버튼 활성화
+        function searchIdActive() {
+            var name = searchIdName.value.length != 0;
+            var birth = searchIdBirth.value.length != 0;
+            var phone = searchIdPhone.value.length != 0;
+
+            if (name && birth && phone) {
+                btnSearchIdSubmit.classList.add("btn-drop");
+                try{
+                    btnSearchIdSubmit.classList.remove("btn-catch");
+                }catch(error){}
+            }
+        }
+
+        //비밀번호 검색 버튼 활성화
+        function searchPWActive() {
+            var id = searchPWId.value.length != 0;
+            var birth = searchPWBirth.value.length != 0;
+            var phone = searchPWPhone.value.length != 0;
+
+            if (id && birth && phone) {
+                try {
+                    btnSearchPWSubmit.classList.add("btn-drop");
+                    btnSearchPWSubmit.classList.remove("btn-catch");
+                } catch (error) {}
+            }
+        }
+
+        //클래스 스위치
+        function checkClass(bool, comp, next) {
+            if (bool) {
+                next.focus();
+                comp
+                    .classList
+                    .remove("is-invalid");
+                comp
+                    .classList
+                    .remove("comp-shake");
+                comp
+                    .classList
+                    .add("is-valid");
+            } else {
+                comp.focus();
+                comp
+                    .classList
+                    .add("is-invalid");
+                comp
+                    .classList
+                    .add("comp-shake");
+                comp
+                    .classList
+                    .remove("is-valid");
+            }
+        }
+
+        //유효성 검사
+        function regExpTest(regExp, str) {
+            var bool = regExp.test(str);
+            return bool;
+        }
+
+        //창전환
+        function pannelSwap(num) {
+            var pannelArr = document.getElementsByClassName("pannel");
+
+            if(roadMapBool)
+                roadMapReset();
+
+            for (var i in pannelArr) {
+                pannelArr[i].className = "pannel";
+            }
+            
+            pannelArr[num]
+                .classList
+                .add("pannel-active")
+
+            switch (num) {
+                case 0:
+                    visitPageLoad(0);
+                    break;
+                case 1:
+                    regId.focus();
+                    insertYear();
+                    break;
+                case 4:
+                    roadMapAnimation();
+                    break;
+                case 8:
+                    userListLoad(0, '', '');
+                    break;
+
+                default:
+                    break;
+            }
+            
+            reSearchPW();
+            reSearchId();
+            reReg();
+        }
+
+        //회원가입 년도 옵션 추가
+        function insertYear() {
+            // 년도 추가
+            var selYear = document.getElementById("regYear");
+            var year = new Date().getFullYear();
+            // var date = document.getElementById("selDate");
+            var str = "<option value='' disabled selected hidden>생년월일</option>";
+
+            for (var i = year; i > year - 100; i--) {
+                str += "<option value='" + i + "'>" + i + "</option>";
+            }
+            selYear.innerHTML = str;
+        }
+
+        //회원가입 일수 옵션 추가
+        function insertDate() {
+            var month = document
+                .getElementById("regMonth")
+                .value;
+            var date = document.getElementById("regDate");
+            var str = "<option value='' disabled selected hidden>--</option>";
+
+            for (var i = 1; i <= 31; i++) {
+                str += "<option value='" + i + "'>" + i + "</option>";
+                if (i == 29 && month == 2)
+                    break;
+                if (i == 30 && (month == 4 || month == 6 || month == 9 || month == 11))
+                    break;
+            }
+            date.innerHTML = str;
+        }
+
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
